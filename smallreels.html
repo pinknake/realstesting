@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>🇮🇳 Bharat Reels</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff8f0;
+      margin: 0;
+      padding: 20px;
+    }
+    .reel {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 20px;
+      background: #fff;
+    }
+    video {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .title {
+      font-weight: bold;
+      margin-top: 10px;
+      color: #e91e63;
+    }
+    .like-comment {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<h2>📽️ Bharat Reels <span style="font-size:14px;">(Powered by BharatVerse)</span></h2>
+<div id="reelsContainer"></div>
+
+<script src="data.js"></script>
+<script>
+  const container = document.getElementById("reelsContainer");
+
+  reels.forEach((reel, i) => {
+    const div = document.createElement("div");
+    div.className = "reel";
+    div.innerHTML = `
+      <video controls src="${reel.url}"></video>
+      <div class="title">${reel.title}</div>
+      <div class="like-comment">
+        <div>❤️ ${reel.likes}</div>
+        <div>💬 ${reel.comments.length} comments</div>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+</script>
+</body>
+</html>
