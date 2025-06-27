@@ -1,0 +1,140 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ऍ Bharat Reels ऍ</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #f3f3f3;
+    }
+    header {
+      background: #ff1744;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 24px;
+    }
+    .reels-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 15px;
+      padding: 15px;
+    }
+    .reel-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .reel-card:hover {
+      transform: scale(1.02);
+    }
+    .reel-thumb {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .reel-info {
+      padding: 10px;
+    }
+    .reel-info h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+    .reel-player {
+      width: 100%;
+      height: auto;
+    }
+    .play-btn, .share-btn {
+      display: inline-block;
+      margin-top: 10px;
+      background: #009688;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .play-btn:hover, .share-btn:hover {
+      background: #00796b;
+    }
+    .ad-bottom, .ad-top {
+      text-align: center;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <header>📹 Bharat Reels <span style="font-size: 14px; display: block;">Powered by BharatVerse</span></header>  <div class="ad-top">
+    <!-- Top Ad -->
+    <script type="text/javascript">
+      atOptions = {
+        'key': '2839a3c1ca8fc9e07589a1b83ea67a15',
+        'format': 'iframe',
+        'height': 50,
+        'width': 320,
+        'params': {}
+      };
+    </script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/2839a3c1ca8fc9e07589a1b83ea67a15/invoke.js"></script>
+  </div>  <div class="reels-container" id="reelsContainer">
+    <!-- Reels will be loaded here -->
+  </div>  <div class="ad-bottom" style="position: fixed; bottom: 0; left: 0; width: 100%; background: #fff; z-index: 999;">
+    <!-- Bottom Ad -->
+    <script type="text/javascript">
+      atOptions = {
+        'key': '2839a3c1ca8fc9e07589a1b83ea67a15',
+        'format': 'iframe',
+        'height': 50,
+        'width': 320,
+        'params': {}
+      };
+    </script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/2839a3c1ca8fc9e07589a1b83ea67a15/invoke.js"></script>
+  </div>  <script>
+    fetch('reels.json')
+      .then(res => res.json())
+      .then(reels => {
+        const container = document.getElementById('reelsContainer');
+        reels.forEach(reel => {
+          const card = document.createElement('div');
+          card.className = 'reel-card';
+
+          card.innerHTML = `
+            <img src="${reel.thumb}" alt="Thumbnail" class="reel-thumb" />
+            <div class="reel-info">
+              <h3>${reel.title}</h3>
+              <button class="play-btn" onclick="playReel('${reel.url}')">🎥 Play</button>
+              <button class="share-btn" onclick="shareReel('${reel.title}')">📣 Share</button>
+            </div>
+          `;
+
+          container.appendChild(card);
+        });
+      });
+
+    function playReel(url) {
+      const videoWindow = window.open('', '_blank', 'width=400,height=700');
+      videoWindow.document.write(`
+        <html><head><title>Play Reel</title></head>
+        <body style="margin:0; background:black; display:flex; align-items:center; justify-content:center; height:100vh">
+          <video src="${url}" controls autoplay style="max-width:100%; max-height:100%;"></video>
+        </body></html>
+      `);
+    }
+
+    function shareReel(title) {
+      const appLink = window.location.href;
+      const text = `🎵 Check out this reel on Bharat Reels:\n${title}\n${appLink}`;
+      if (navigator.share) {
+        navigator.share({ title: "Bharat Reels", text: text, url: appLink });
+      } else {
+        const whatsapp = `https://wa.me/?text=${encodeURIComponent(text)}`;
+        window.open(whatsapp, '_blank');
+      }
+    }
+  </script></body>
+</html>
