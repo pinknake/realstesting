@@ -101,6 +101,69 @@
       font-size: 12px;
       color: #666;
     }
+.ad {
+  margin: 20px 0;
+  text-align: center;
+  min-height: 60px;
+  background: #1f1f1f;
+  border-radius: 10px;
+  padding: 10px;
+}
+    
+
+  .calc-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.calc-buttons button {
+  padding: 15px;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  background: #444;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.calc-buttons button:hover {
+  background: #666;
+}
+
+.calc-buttons .clear {
+  grid-column: span 4;
+  background: #c62828;
+}
+  
+  
+  .card input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+.card button {
+  background-color: #1e88e5;
+  color: white;
+  border: none;
+  padding: 12px;
+  width: 100%;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.card button:hover {
+  background-color: #1565c0;
+}
+  
+  
+  
+  
   </style>
 </head>
 <body>
@@ -141,6 +204,37 @@
 <div id="tab2" class="tab-content">
   <div class="card">
     <h2>Manual GST Breakdown</h2>
+ <div id="tab2" class="tab-content">
+  <div class="card">
+    <h2>📟 Manual Calculator</h2>
+    <input type="text" id="manualDisplay" readonly placeholder="0" />
+
+    <div class="calc-buttons">
+      <button onclick="press('7')">7</button>
+      <button onclick="press('8')">8</button>
+      <button onclick="press('9')">9</button>
+      <button onclick="press('/')">÷</button>
+
+      <button onclick="press('4')">4</button>
+      <button onclick="press('5')">5</button>
+      <button onclick="press('6')">6</button>
+      <button onclick="press('*')">×</button>
+
+      <button onclick="press('1')">1</button>
+      <button onclick="press('2')">2</button>
+      <button onclick="press('3')">3</button>
+      <button onclick="press('-')">−</button>
+
+      <button onclick="press('0')">0</button>
+      <button onclick="press('.')">.</button>
+      <button onclick="calculateManual()">=</button>
+      <button onclick="press('+')">+</button>
+
+      <button onclick="clearManual()" class="clear">C</button>
+    </div>
+  </div>
+</div>
+    
     <p>Coming soon... 🔧</p>
   </div>
 </div>
@@ -149,7 +243,25 @@
 <div id="tab3" class="tab-content">
   <div class="card">
     <h2>Service + Electricity</h2>
-    <p>Coming soon... 🔧</p>
+  <div id="tab3" class="tab-content">
+  <div class="card">
+    <h2>💡 Service + Electricity Bill</h2>
+
+    <label>Service Charge (₹):</label>
+    <input type="number" id="serviceCharge" placeholder="e.g. 500" />
+
+    <label>Electricity Units (kWh):</label>
+    <input type="number" id="unitsUsed" placeholder="e.g. 120" />
+
+    <label>Per Unit Rate (₹):</label>
+    <input type="number" id="unitRate" placeholder="e.g. 7.5" />
+
+    <button onclick="calculateServiceElectric()">Calculate Total</button>
+
+    <div id="serviceElectricResult" style="margin-top: 20px;"></div>
+  </div>
+</div>
+   <p>Coming soon... 🔧</p>
   </div>
 </div>
 
@@ -157,15 +269,43 @@
 <div id="tab4" class="tab-content">
   <div class="card">
     <h2>TDS Calculator</h2>
-    <p>Coming soon... 🔧</p>
+<div id="tab4" class="tab-content">
+  <div class="card">
+    <h2>📄 TDS Calculator</h2>
+
+    <label>Payment Amount (₹):</label>
+    <input type="number" id="tdsAmount" placeholder="e.g. 10000" />
+
+    <label>TDS Rate (%):</label>
+    <input type="number" id="tdsRate" placeholder="e.g. 10" />
+
+    <button onclick="calculateTDS()">Calculate TDS</button>
+
+    <div id="tdsResult" style="margin-top: 20px;"></div>
   </div>
 </div>
+    
 
 <!-- 📊 Tab 5 -->
 <div id="tab5" class="tab-content">
   <div class="card">
     <h2>Excise Duty</h2>
-    <p>Coming soon... 🔧</p>
+   <div id="tab5" class="tab-content">
+  <div class="card">
+    <h2>🏭 Excise Duty Calculator</h2>
+
+    <label>Item Price (₹):</label>
+    <input type="number" id="excisePrice" placeholder="e.g. 2000" />
+
+    <label>Excise Duty Rate (%):</label>
+    <input type="number" id="exciseRate" placeholder="e.g. 12" />
+
+    <button onclick="calculateExcise()">Calculate</button>
+
+    <div id="exciseResult" style="margin-top: 20px;"></div>
+  </div>
+</div>
+      <p>Coming soon... 🔧</p>
   </div>
 </div>
 
