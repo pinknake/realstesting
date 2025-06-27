@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>🇮🇳 Bharat Tax Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>🇮🇳 Bharat Tax Hub</h1>
+    <p>Powered by BharatVerse</p>
+  </header>
+
+  <div class="tab-container">
+    <div class="tab-buttons">
+      <button class="tab-btn active" onclick="openTab(event, 'tab1')">🧮 GST Direct</button>
+      <button class="tab-btn" onclick="openTab(event, 'tab2')">🔢 Manual GST</button>
+      <button class="tab-btn" onclick="openTab(event, 'tab3')">⚡ Service + Elec</button>
+      <button class="tab-btn" onclick="openTab(event, 'tab4')">💰 TDS</button>
+      <button class="tab-btn" onclick="openTab(event, 'tab5')">📦 Customs</button>
+    </div>
+
+    <div id="tab1" class="tab-content active">
+      <div class="card">
+        <h2>🧮 GST Direct Calculator</h2>
+        <p>Add GST logic here...</p>
+      </div>
+    </div>
+
+    <div id="tab2" class="tab-content">
+      <div class="card">
+        <h2>🔢 Manual GST Calculator</h2>
+        <p>Manual calculator logic will go here...</p>
+      </div>
+    </div>
+
+    <div id="tab3" class="tab-content">
+      <div class="card">
+        <h2>⚡ Service + Electricity</h2>
+        <p>Service/electricity calculator...</p>
+      </div>
+    </div>
+
+    <div id="tab4" class="tab-content">
+      <div class="card">
+        <h2>💰 TDS Calculator</h2>
+        <p>TDS percentage + breakdown...</p>
+      </div>
+    </div>
+
+    <div id="tab5" class="tab-content">
+      <div class="card">
+        <h2>📦 Customs & Excise</h2>
+        <p>Customs/excise logic...</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openTab(evt, tabId) {
+      document.querySelectorAll(".tab-content").forEach(tab => tab.classList.remove("active"));
+      document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+      document.getElementById(tabId).classList.add("active");
+      evt.currentTarget.classList.add("active");
+    }
+  </script>
+</body>
+</html>
