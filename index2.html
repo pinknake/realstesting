@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>🇮🇳 Bharat Reels</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff;
+    }
+
+    header {
+      background: #d81b60;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 22px;
+    }
+
+    .reel-card {
+      margin: 15px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .reel-video {
+      width: 100%;
+      max-height: 400px;
+    }
+
+    .reel-info {
+      padding: 10px;
+    }
+
+    .reel-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .like-btn {
+      background: #e91e63;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .comments {
+      margin-top: 10px;
+    }
+
+    .comments textarea {
+      width: 100%;
+      padding: 6px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-bottom: 6px;
+    }
+
+    .comments button {
+      background: #4caf50;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .comment-list {
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .comment-list p {
+      margin: 3px 0;
+      background: #f9f9f9;
+      padding: 5px;
+      border-radius: 4px;
+    }
+
+    /* + Upload Button */
+    .upload-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #2196f3;
+      color: white;
+      font-size: 26px;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+
+<header>🇮🇳 Bharat Reels</header>
+
+<div id="reelsContainer"></div>
+
+<!-- Floating + Button -->
+<button class="upload-btn" onclick="alert('Upload feature coming soon 🚀')">+</button>
+
+<script>
+// Sample reels data (replace with real from Firebase or JSON later)
+const reels = [
+  {
+    title: "Morning Vibes 🌄",
+    video: "reels/video1.mp4"
+  },
+  {
+    title: "Dance Moves 💃",
+    video: "reels/video2.mp4"
+  }
+];
+
+const container = document.getElementById("reelsContainer");
+
+reels.forEach((reel, index) => {
+  const card = document.createElement("div");
+  card.className = "reel-card";
+
+  card.innerHTML = `
+    <video class="reel-video" controls muted>
+      <source src="${reel.video}" type="video/mp4">
+      Your browser does not support video.
+    </video>
+    <div class="reel-info">
+      <div class="reel-title">${reel.title}</div>
+      <button class="like-btn" onclick="likeReel(this)">❤️ Like</button>
+      <div class="comments">
+        <textarea placeholder="Comment..."></textarea>
+        <button onclick="postComment(this)">Post</button>
+        <div class="comment-list"></div>
+      </div>
+    </div>
+  `;
+  container.appendChild(card);
+});
+
+function likeReel(btn) {
+  if (!btn.dataset.liked) {
+    btn.innerText = "❤️ Liked";
+    btn.dataset.liked = "true";
+  } else {
+    btn.innerText = "❤️ Like";
+    delete btn.dataset.liked;
+  }
+}
+
+function postComment(btn) {
+  const container = btn.parentElement;
+  const textarea = container.querySelector("textarea");
+  const list = container.querySelector(".comment-list");
+  const text = textarea.value.trim();
+  if (text) {
+    const p = document.createElement("p");
+    p.innerText = text;
+    list.appendChild(p);
+    textarea.value = "";
+  }
+}
+</script>
+
+</body>
+</html>
