@@ -1,0 +1,228 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>💰 Bharat Tax Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding-bottom: 100px;
+    }header {
+  background: #4caf50;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-size: 22px;
+}
+
+.tab-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+  background: #e0f2f1;
+}
+
+.tab-buttons button {
+  padding: 10px 20px;
+  border: none;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+
+.tab-buttons button:hover {
+  background: #dcedc8;
+}
+
+.tab-content {
+  display: none;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  max-width: 600px;
+  margin: auto;
+}
+
+.card h2 {
+  margin-top: 0;
+  color: #388e3c;
+}
+
+.card input, .card select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.tools {
+  text-align: center;
+  margin: 20px;
+}
+
+.tools button {
+  padding: 10px 15px;
+  margin: 5px;
+  border: none;
+  border-radius: 6px;
+  background: #2196f3;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.tools button:hover {
+  background: #1565c0;
+}
+
+.ad-top, .ad-bottom {
+  text-align: center;
+  margin: 10px auto;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  font-size: 12px;
+  color: #666;
+}
+
+.ad {
+  margin: 20px 0;
+  text-align: center;
+  min-height: 60px;
+  background: #1f1f1f;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+  </style>
+</head>
+<body><header>🇮🇳 Bharat Tax Calculators</header><!-- Ad Banner --><div class="ad-top">
+  <script async src="//your-top-ad-link.js"></script>
+</div><!-- Tabs --><div class="tab-buttons">
+  <button onclick="showTab('tab1')">GST</button>
+  <button onclick="showTab('tab2')">Manual GST</button>
+  <button onclick="showTab('tab3')">Service + Elec</button>
+  <button onclick="showTab('tab4')">TDS</button>
+  <button onclick="showTab('tab5')">Excise</button>
+</div><!-- Tab Content --><div id="tab1" class="tab-content">
+  <div class="card">
+    <h2>🧬 GST Calculator</h2>
+    <input type="number" id="amount" placeholder="Enter Amount">
+    <select id="gstRate">
+      <option value="5">5%</option>
+      <option value="12">12%</option>
+      <option value="18" selected>18%</option>
+      <option value="28">28%</option>
+    </select>
+    <button onclick="calculateGST()">Calculate</button>
+    <div id="gstResult" style="margin-top:20px;"></div>
+  </div>
+</div><div id="tab2" class="tab-content">
+  <div class="card">
+    <h2>💿 Manual Calculator</h2>
+    <input type="text" id="manualDisplay" readonly placeholder="0" />
+    <div class="calc-buttons">
+      <button onclick="press('7')">7</button>
+      <button onclick="press('8')">8</button>
+      <button onclick="press('9')">9</button>
+      <button onclick="press('/')">÷</button>
+      <button onclick="press('4')">4</button>
+      <button onclick="press('5')">5</button>
+      <button onclick="press('6')">6</button>
+      <button onclick="press('*')">×</button>
+      <button onclick="press('1')">1</button>
+      <button onclick="press('2')">2</button>
+      <button onclick="press('3')">3</button>
+      <button onclick="press('-')">−</button>
+      <button onclick="press('0')">0</button>
+      <button onclick="press('.')">.</button>
+      <button onclick="calculateManual()">=</button>
+      <button onclick="press('+')">+</button>
+      <button onclick="clearManual()" class="clear">C</button>
+    </div>
+  </div>
+</div><div id="tab3" class="tab-content">
+  <div class="card">
+    <h2>💡 Service + Electricity</h2>
+    <input type="number" id="serviceCharge" placeholder="Service Charge (₹)" />
+    <input type="number" id="unitsUsed" placeholder="Electricity Units (kWh)" />
+    <input type="number" id="unitRate" placeholder="Per Unit Rate (₹)" />
+    <button onclick="calculateServiceElectric()">Calculate Total</button>
+    <div id="serviceElectricResult" style="margin-top:20px;"></div>
+  </div>
+</div><div id="tab4" class="tab-content">
+  <div class="card">
+    <h2>📄 TDS Calculator</h2>
+    <input type="number" id="tdsAmount" placeholder="Payment Amount (₹)" />
+    <input type="number" id="tdsRate" placeholder="TDS Rate (%)" />
+    <button onclick="calculateTDS()">Calculate TDS</button>
+    <div id="tdsResult" style="margin-top:20px;"></div>
+  </div>
+</div><div id="tab5" class="tab-content">
+  <div class="card">
+    <h2>🏭 Excise Duty</h2>
+    <input type="number" id="excisePrice" placeholder="Item Price (₹)" />
+    <input type="number" id="exciseRate" placeholder="Excise Duty Rate (%)" />
+    <button onclick="calculateExcise()">Calculate</button>
+    <div id="exciseResult" style="margin-top:20px;"></div>
+  </div>
+</div><!-- Tools --><div class="tools">
+  <button onclick="window.print()">🖨️ Print</button>
+  <button onclick="sharePage()">📤 Share</button>
+</div><!-- Ads --><div class="ad">
+  <script async="async" data-cfasync="false" src="//pl26993212.profitableratecpm.com/f411671ee1d0146704d13266d9687f63/invoke.js"></script>
+  <div id="container-f411671ee1d0146704d13266d9687f63"></div>
+</div><!-- Bottom Banner Ad --><div style="position:fixed; bottom:0; width:100%; z-index:999; background:#121212; text-align:center;">
+  <script type="text/javascript">
+    atOptions = {
+      'key' : '2839a3c1ca8fc9e07589a1b83ea67a15',
+      'format' : 'iframe',
+      'height' : 50,
+      'width' : 320,
+      'params' : {}
+    };
+  </script>
+  <script type="text/javascript" src="//www.highperformanceformat.com/2839a3c1ca8fc9e07589a1b83ea67a15/invoke.js"></script>
+</div><!-- Footer --><footer>Powered by BharatVerse</footer><!-- Scripts --><script>
+  function showTab(id) {
+    document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+    document.getElementById(id).style.display = 'block';
+  }
+  window.onload = () => showTab('tab1');
+
+  function calculateGST() {
+    const amount = parseFloat(document.getElementById('amount').value);
+    const gst = parseFloat(document.getElementById('gstRate').value);
+    if (!amount || !gst) return document.getElementById('gstResult').innerHTML = "⚠️ Enter valid values.";
+    const tax = (amount * gst) / 100;
+    const total = amount + tax;
+    document.getElementById('gstResult').innerHTML = `GST: ₹${tax.toFixed(2)}<br>Total: ₹${total.toFixed(2)}`;
+  }
+
+  function sharePage() {
+    if (navigator.share) {
+      navigator.share({
+        title: 'Bharat Tax Calculator',
+        text: '💰 Check out Bharat Tax Calculator',
+        url: window.location.href
+      });
+    } else {
+      alert("Sharing not supported in this browser.");
+    }
+  }
+</script><script src="script5.js"></script></body>
+</html>
