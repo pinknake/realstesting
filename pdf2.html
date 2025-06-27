@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>🖼️ Image to PDF - Bharat Tools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="stylepdf2.css" />
+</head>
+<body>
+
+  <header>
+    <h1>🖼️ Image to PDF</h1>
+    <p>Powered by BharatVerse | Works on Android & iOS</p>
+  </header>
+
+  <main>
+    <div class="card">
+      <input type="file" id="imageInput" accept="image/*" multiple />
+      <button onclick="convertToPDF()">Convert to PDF</button>
+      <div id="output"></div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="ad">[Ad Space]</div>
+    <button onclick="shareApp()">📤 Share Tool</button>
+  </footer>
+
+  <!-- 📦 PDF-lib CDN -->
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+  <script src="scriptpdf2.js"></script>
+</body>
+</html>
