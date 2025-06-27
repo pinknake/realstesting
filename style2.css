@@ -1,0 +1,124 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #121212;
+  color: #f0f0f0;
+}
+
+.container {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #1f1f1f;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.6);
+}
+
+h1 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #4caf50;
+}
+
+input[type="number"],
+select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  font-size: 16px;
+  border: 1px solid #333;
+  border-radius: 8px;
+  background: #2c2c2c;
+  color: #f0f0f0;
+}
+
+.type-switch,
+.tax-type {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.type-switch label,
+.tax-type label {
+  flex: 1;
+  background: #333;
+  margin: 5px;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #444;
+}
+
+input[type="radio"] {
+  margin-right: 6px;
+}
+
+.custom-taxes {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.custom-taxes input {
+  flex: 1;
+  min-width: 48%;
+}
+
+.calc-btn {
+  background: #4caf50;
+  color: white;
+  font-size: 18px;
+  padding: 12px;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.calc-btn:hover {
+  background: #388e3c;
+}
+
+.result {
+  background: #263238;
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 16px;
+  text-align: center;
+  line-height: 1.5;
+  color: #c8e6c9;
+}
+
+button {
+  padding: 10px 16px;
+  margin-top: 10px;
+  font-size: 14px;
+  border: none;
+  background: #1976d2;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1565c0;
+}
+
+/* Ads */
+.ad-bottom {
+  margin-top: 40px;
+  text-align: center;
+  background: #222;
+  padding: 10px;
+  border-top: 1px solid #333;
+}
