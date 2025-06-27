@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bharat GST Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style2.css" />
+</head>
+<body>
+
+  <div class="container">
+    <h1>🇮🇳 Bharat GST Calculator</h1>
+
+    <label>Enter Base Amount (₹):</label>
+    <input type="number" id="amount" placeholder="e.g. 1000" />
+
+    <label>GST Rate (%):</label>
+    <input type="number" id="gst" placeholder="e.g. 18" />
+
+    <div class="tax-type">
+      <label><input type="radio" name="gstType" value="cgst_sgst" checked /> CGST + SGST</label>
+      <label><input type="radio" name="gstType" value="igst" /> IGST</label>
+    </div>
+
+    <button class="calc-btn" id="calcBtn">🧮 Calculate</button>
+
+    <div class="result" id="result">
+      <small>📋 GST breakdown will appear here...</small>
+    </div>
+
+    <!-- 🔽 Ad space (optional) -->
+    <div class="ad-bottom">
+      <!-- Paste ad script here if needed -->
+      <small>📢 Your ad here (bottom)</small>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
