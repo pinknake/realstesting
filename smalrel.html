@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🇮🇳 Bharat Reels</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #fff, #f5f5f5);
+      padding-bottom: 70px; /* space for bottom ad */
+    }
+
+    header {
+      background: #d81b60;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 22px;
+    }
+
+    .powered {
+      font-size: 12px;
+      color: #ffe4ec;
+      margin-top: 5px;
+    }
+
+    .reel-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .reel-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 10px;
+      overflow: hidden;
+    }
+
+    .reel-card video {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .reel-title {
+      font-weight: bold;
+      font-size: 16px;
+      margin: 8px 0 5px;
+    }
+
+    .reel-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 5px;
+    }
+
+    .btn {
+      padding: 6px 12px;
+      font-size: 13px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn-share {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .btn-like {
+      background-color: #e91e63;
+      color: white;
+    }
+
+    /* Ads Padding */
+    .top-ad {
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .bottom-ad {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      background: #fff;
+      padding: 5px 0;
+      box-shadow: 0 -2px 6px rgba(0,0,0,0.2);
+      z-index: 999;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🔝 Top Banner Ad -->
+  <div class="top-ad">
+    <script type="text/javascript">
+      atOptions = {
+        'key' : '2839a3c1ca8fc9e07589a1b83ea67a15',
+        'format' : 'iframe',
+        'height' : 50,
+        'width' : 320,
+        'params' : {}
+      };
+    </script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/2839a3c1ca8fc9e07589a1b83ea67a15/invoke.js"></script>
+  </div>
+
+  <!-- Header -->
+  <header>
+    🇮🇳 Bharat Reels
+    <div class="powered">Powered by BharatVerse</div>
+  </header>
+
+  <!-- Reels -->
+  <div class="reel-container">
+    <div class="reel-card">
+      <video controls src="videos/reel1.mp4" poster="thumbs/reel1.jpg"></video>
+      <div class="reel-title">🌟 Amazing Dance</div>
+      <div class="reel-actions">
+        <button class="btn btn-like">❤️ Like</button>
+        <button class="btn btn-share" onclick="shareReel('🌟 Amazing Dance')">📤 Share</button>
+      </div>
+    </div>
+
+    <div class="reel-card">
+      <video controls src="videos/reel2.mp4" poster="thumbs/reel2.jpg"></video>
+      <div class="reel-title">🇮🇳 Indian Culture</div>
+      <div class="reel-actions">
+        <button class="btn btn-like">❤️ Like</button>
+        <button class="btn btn-share" onclick="shareReel('🇮🇳 Indian Culture')">📤 Share</button>
+      </div>
+    </div>
+
+    <!-- Add more reels here... -->
+  </div>
+
+  <!-- 🔻 Bottom Fixed Ad -->
+  <div class="bottom-ad">
+    <script type="text/javascript">
+      atOptions = {
+        'key' : '2839a3c1ca8fc9e07589a1b83ea67a15',
+        'format' : 'iframe',
+        'height' : 50,
+        'width' : 320,
+        'params' : {}
+      };
+    </script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/2839a3c1ca8fc9e07589a1b83ea67a15/invoke.js"></script>
+  </div>
+
+  <!-- Script for Share -->
+  <script>
+    function shareReel(title) {
+      const msg = `🎬 Play this reel on Bharat Reels: ${title}\n${window.location.href}`;
+      if (navigator.share) {
+        navigator.share({
+          title: "Bharat Reels",
+          text: msg,
+          url: window.location.href
+        });
+      } else {
+        const wa = "https://wa.me/?text=" + encodeURIComponent(msg);
+        window.open(wa, '_blank');
+      }
+    }
+  </script>
+
+</body>
+</html>
