@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GST Calculator - Bharat 🇮🇳</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1 id="title">🇮🇳 Bharat GST Calculator</h1>
+
+    <select id="langSelect" onchange="changeLang()">
+      <option value="en">English</option>
+      <option value="hi">हिन्दी</option>
+    </select>
+
+    <input type="number" id="amount" placeholder="Enter Amount" />
+
+    <div class="type-switch">
+      <label><input type="radio" name="type" value="add" checked /> Add GST</label>
+      <label><input type="radio" name="type" value="remove" /> Remove GST</label>
+    </div>
+
+    <div class="slabs">
+      <button onclick="setGST(5)">5%</button>
+      <button onclick="setGST(12)">12%</button>
+      <button onclick="setGST(18)">18%</button>
+      <button onclick="setGST(28)">28%</button>
+    </div>
+
+    <button class="calc-btn" onclick="calculateGST()">Calculate</button>
+
+    <div class="result" id="result"></div>
+
+    <button class="share-btn" onclick="shareResult()">📤 Share</button>
+  </div>
+
+  <!-- ✅ Bottom Ad Space -->
+  <div class="ad-banner">
+    <script type="text/javascript">
+      atOptions = {
+        'key': '2839a3c1ca8fc9e07589a1b83ea67a15',
+        'format': 'iframe',
+        'height': 50,
+        'width': 320,
+        'params': {}
+      };
+    </script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/2839a3c1ca8fc9e07589a1b83ea67a15/invoke.js"></script>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
