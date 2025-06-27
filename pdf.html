@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📎 Merge PDF - Bharat Tools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>📎 Merge PDF</h1>
+    <p>Powered by BharatVerse | Works on Android & iOS</p>
+  </header>
+
+  <main>
+    <div class="card">
+      <input type="file" id="pdfFiles" accept=".pdf" multiple />
+      <button onclick="mergePDFs()">Merge PDFs</button>
+      <div id="output"></div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="ad">[Ad Space]</div>
+    <button onclick="shareApp()">📤 Share Tool</button>
+  </footer>
+
+  <!-- 📦 PDF-lib CDN -->
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
