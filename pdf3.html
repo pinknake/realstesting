@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📄 PDF to Image - Bharat Tools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="stylepdfpdf3.css" />
+</head>
+<body>
+
+  <header>
+    <h1>📄 PDF to Image</h1>
+    <p>Powered by BharatVerse | Android + iOS Ready</p>
+  </header>
+
+  <main>
+    <div class="card">
+      <input type="file" id="pdfInput" accept="application/pdf" />
+      <button onclick="convertPDF()">Convert to Images</button>
+      <div id="imagesArea"></div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="ad">[Ad Space]</div>
+    <button onclick="shareApp()">📤 Share Tool</button>
+  </footer>
+
+  <!-- 📦 pdf.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+  <script src="scriptpdf3.js"></script>
+</body>
+</html>
