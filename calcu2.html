@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Bharat GST Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>🇮🇳 Bharat Tax Calculator</h1>
+
+    <select id="langSelect" onchange="changeLang()">
+      <option value="en">English</option>
+      <option value="hi">हिन्दी</option>
+    </select>
+
+    <input type="number" id="amount" placeholder="Enter Amount" />
+
+    <div class="type-switch">
+      <label><input type="radio" name="type" value="add" checked /> Add GST</label>
+      <label><input type="radio" name="type" value="remove" /> Remove GST</label>
+    </div>
+
+    <div class="tax-type">
+      <label><input type="radio" name="tax" value="cgst_sgst" checked /> SGST + CGST</label>
+      <label><input type="radio" name="tax" value="igst" /> IGST</label>
+    </div>
+
+    <!-- Custom % Inputs -->
+    <div class="custom-taxes">
+      <input type="number" id="cgstInput" placeholder="Enter CGST %" />
+      <input type="number" id="sgstInput" placeholder="Enter SGST %" />
+      <input type="number" id="igstInput" placeholder="Enter IGST %" disabled />
+    </div>
+
+    <button class="calc-btn" onclick="calculateGST()">Calculate</button>
+    <div id="result" class="result"></div>
+    <button onclick="shareResult()">📤 Share</button>
+  </div>
+
+  <!-- Bottom Ad -->
+  <div class="ad-bottom">
+    <script type="text/javascript">
+      atOptions = {
+        'key': '2839a3c1ca8fc9e07589a1b83ea67a15',
+        'format': 'iframe',
+        'height': 50,
+        'width': 320,
+        'params': {}
+      };
+    </script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/2839a3c1ca8fc9e07589a1b83ea67a15/invoke.js"></script>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
