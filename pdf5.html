@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📄 PDF to Word Converter</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f0f0;
+      padding: 30px;
+    }
+    .card {
+      background: #fff;
+      max-width: 600px;
+      margin: auto;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+    }
+    button {
+      background: #388e3c;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #2e7d32;
+    }
+    .tools {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>📤 PDF to Word (Text Only)</h2>
+  <input type="file" id="pdfFile" accept="application/pdf">
+  <button onclick="convertPDF()">Convert & Download</button>
+
+  <div class="tools">
+    <button onclick="window.print()">🖨️ Print</button>
+    <button onclick="shareTool()">📤 Share</button>
+  </div>
+</div>
+
+<script>
+  async function convertPDF() {
+    const file = document.getElementById('pdfFile').files[0];
+    if (!file) return alert('Please upload a PDF file.');
+
+    const reader = new FileReader();
+    reader.onload = async function () {
+      const typedArray = new Uint8Array(this.result);
+      const pdf = await pdfjsLib.getDocument({ data: typedArray }).promise;
+
+      let text = '';
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const content = await page.getTextContent();
+        text += content.items.map(item => item.str).join(' ') + '\n\n';
+      }
+
+      const blob = new Blob([text], { type: "application/msword" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "converted.doc";
+      link.click();
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  function shareTool() {
+    if (navigator.share) {
+      navigator.share({
+        title: "Bharat Tools - PDF to Word",
+        text: "Convert your PDF to Word with Bharat Tools 🇮🇳",
+        url: window.location.href
+      });
+    } else {
+      alert("Sharing not supported on this device.");
+    }
+  }
+</script>
+
+</body>
+</html>
