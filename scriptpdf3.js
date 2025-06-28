@@ -26,9 +26,20 @@ async function convertPDF() {
 
       await page.render({ canvasContext: context, viewport }).promise;
 
+      const imgURL = canvas.toDataURL("image/png");
+
       const img = document.createElement("img");
-      img.src = canvas.toDataURL("image/png");
+      img.src = imgURL;
+
+      const downloadLink = document.createElement("a");
+      downloadLink.href = imgURL;
+      downloadLink.download = `page-${i}.png`;
+      downloadLink.innerText = `⬇️ Download Page ${i}`;
+      downloadLink.style.display = "block";
+      downloadLink.style.marginBottom = "15px";
+
       output.appendChild(img);
+      output.appendChild(downloadLink);
     }
   };
 
