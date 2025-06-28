@@ -91,53 +91,50 @@
       reader.readAsArrayBuffer(file);
     });
 
-    async function renderThumbnails(pdf) {
-      const preview = document.getElementById("preview");
-      preview.innerHTML = "";
-      pageImages = [];
+    function renderThumbnails(pdf) {
+  const preview = document.getElementById("preview");
+  preview.innerHTML = "";
 
-      for (let i = 0; i < pdf.numPages; i++) {
-        const page = await pdf.getPage(i + 1);
-        const viewport = page.getViewport({ scale: 0.3 });
+  pageImages.forEach(async (pageIndex, displayIndex) => {
+    const page = await pdf.getPage(pageIndex + 1);
+    const viewport = page.getViewport({ scale: 0.3 });
 
-        const canvas = document.createElement("canvas");
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
+    const canvas = document.createElement("canvas");
+    canvas.width = viewport.width;
+    canvas.height = viewport.height;
 
-        const context = canvas.getContext("2d");
-        await page.render({ canvasContext: context, viewport: viewport }).promise;
+    const context = canvas.getContext("2d");
+    await page.render({ canvasContext: context, viewport: viewport }).promise;
 
-        const wrapper = document.createElement("div");
-        wrapper.className = "page-thumb";
-        wrapper.draggable = true;
-        wrapper.dataset.index = i;
-        wrapper.appendChild(canvas);
-        preview.appendChild(wrapper);
+    const wrapper = document.createElement("div");
+    wrapper.className = "page-thumb";
+    wrapper.draggable = true;
+    wrapper.dataset.index = displayIndex;
+    wrapper.appendChild(canvas);
+    preview.appendChild(wrapper);
 
-        pageImages.push(i);
+    // Drag events
+    wrapper.addEventListener("dragstart", e => {
+      e.dataTransfer.setData("text/plain", displayIndex);
+      wrapper.classList.add("dragging");
+    });
+    wrapper.addEventListener("dragend", () => wrapper.classList.remove("dragging"));
+    wrapper.addEventListener("dragover", e => e.preventDefault());
+    wrapper.addEventListener("drop", e => {
+      e.preventDefault();
+      const fromIndex = parseInt(e.dataTransfer.getData("text/plain"));
+      const toIndex = parseInt(wrapper.dataset.index);
+      reorderPages(fromIndex, toIndex);
+    });
+  });
+}
 
-        // Drag events
-        wrapper.addEventListener("dragstart", e => {
-          e.dataTransfer.setData("text/plain", i);
-          wrapper.classList.add("dragging");
-        });
-        wrapper.addEventListener("dragend", () => wrapper.classList.remove("dragging"));
-        wrapper.addEventListener("dragover", e => e.preventDefault());
-        wrapper.addEventListener("drop", e => {
-          e.preventDefault();
-          const fromIndex = parseInt(e.dataTransfer.getData("text/plain"));
-          const toIndex = parseInt(wrapper.dataset.index);
-          reorderPages(fromIndex, toIndex);
-        });
-      }
-    }
-
-    function reorderPages(from, to) {
-      if (from === to) return;
-      const item = pageImages.splice(from, 1)[0];
-      pageImages.splice(to, 0, item);
-      renderThumbnails(pdfDoc); // Re-render with new order
-    }
+function reorderPages(from, to) {
+  if (from === to) return;
+  const moved = pageImages.splice(from, 1)[0];
+  pageImages.splice(to, 0, moved);
+  renderThumbnails(pdfDoc); // Now uses correct pageImages order
+}
 
     async function downloadReorderedPDF() {
       const pdfBytes = await pdfDoc.getData();
