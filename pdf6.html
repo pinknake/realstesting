@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📉 PDF Compressor - Bharat Tools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+      margin: 0;
+    }
+    .card {
+      background: #fff;
+      max-width: 600px;
+      margin: auto;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    h2 {
+      color: #2e7d32;
+    }
+    input[type="file"], button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      margin-top: 12px;
+      border-radius: 8px;
+    }
+    button {
+      background: #388e3c;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #2e7d32;
+    }
+    .tools {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .tools button {
+      width: 48%;
+      background: #1976d2;
+    }
+    .tools button:hover {
+      background: #0d47a1;
+    }
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      color: #888;
+      font-size: 14px;
+    }
+    .result-msg {
+      margin-top: 15px;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h2>📉 Compress Your PDF</h2>
+  <p>Select a PDF file and reduce its size (browser-only simulation).</p>
+
+  <input type="file" id="pdfFile" accept="application/pdf" />
+  <button onclick="compressPDF()">Compress Now</button>
+
+  <div class="result-msg" id="resultMsg"></div>
+
+  <div class="tools">
+    <button onclick="window.print()">🖨️ Print</button>
+    <button onclick="shareTool()">📤 Share</button>
+  </div>
+</div>
+
+<footer>🔧 Powered by <strong>BharatVerse</strong></footer>
+
+<script>
+  function compressPDF() {
+    const fileInput = document.getElementById("pdfFile");
+    const file = fileInput.files[0];
+    if (!file) {
+      alert("Please upload a PDF file.");
+      return;
+    }
+
+    // Fake "compression" delay
+    const resultMsg = document.getElementById("resultMsg");
+    resultMsg.innerText = "🔄 Compressing your file...";
+
+    setTimeout(() => {
+      // Simulate file compression
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(file);
+      link.download = "compressed_" + file.name;
+      link.click();
+      resultMsg.innerText = "✅ File compressed successfully!";
+    }, 1500);
+  }
+
+  function shareTool() {
+    const msg = "📉 Compress PDF instantly with Bharat Tools 🇮🇳";
+    if (navigator.share) {
+      navigator.share({
+        title: "Bharat PDF Compressor",
+        text: msg,
+        url: window.location.href
+      });
+    } else {
+      alert("Sharing not supported on this device.");
+    }
+  }
+</script>
+
+</body>
+</html>
