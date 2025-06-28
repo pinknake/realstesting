@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>📝 Add Text to PDF - Bharat Tools</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+      text-align: center;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    input, select, button {
+      padding: 10px;
+      margin: 10px;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      background: #2196f3;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1976d2;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 12px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>📝 Add Text to PDF</h2>
+
+    <input type="file" id="pdfUpload" accept="application/pdf">
+    <input type="text" id="textInput" placeholder="Enter text to add (e.g. Confidential)">
+    
+    <select id="position">
+      <option value="top">Top</option>
+      <option value="center" selected>Center</option>
+      <option value="bottom">Bottom</option>
+    </select>
+
+    <input type="number" id="fontSize" value="20" placeholder="Font Size (e.g. 20)">
+    <input type="number" id="targetPage" placeholder="Page No (Leave blank for all pages)">
+
+    <button onclick="addTextToPDF()">Add Text & Download</button>
+
+    <br>
+    <button onclick="window.print()">🖨️ Print</button>
+    <button onclick="shareTool()">📤 Share</button>
+  </div>
+
+  <footer>Powered by BharatVerse</footer>
+
+  <script>
+    async function addTextToPDF() {
+      const file = document.getElementById('pdfUpload').files[0];
+      const text = document.getElementById('textInput').value;
+      const pos = document.getElementById('position').value;
+      const size = parseInt(document.getElementById('fontSize').value);
+      const targetPage = parseInt(document.getElementById('targetPage').value);
+
+      if (!file || !text) {
+        alert("Please select a PDF and enter some text.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = async function () {
+        const pdfDoc = await PDFLib.PDFDocument.load(reader.result);
+        const pages = pdfDoc.getPages();
+        const font = await pdfDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
+
+        pages.forEach((page, i) => {
+          if (!targetPage || targetPage === i + 1) {
+            const { width, height } = page.getSize();
+            let y = pos === 'top' ? height - 40 : pos === 'bottom' ? 40 : height / 2;
+
+            page.drawText(text, {
+              x: 50,
+              y: y,
+              size: size,
+              font: font,
+              color: PDFLib.rgb(0, 0, 0)
+            });
+          }
+        });
+
+        const pdfBytes = await pdfDoc.save();
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "modified.pdf";
+        a.click();
+        URL.revokeObjectURL(url);
+      };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function shareTool() {
+      const msg = "📝 Try Bharat PDF Text Adder Tool!";
+      if (navigator.share) {
+        navigator.share({
+          title: "Bharat PDF Text Tool",
+          text: msg,
+          url: window.location.href
+        });
+      } else {
+        alert("Sharing not supported.");
+      }
+    }
+  </script>
+</body>
+</html>
