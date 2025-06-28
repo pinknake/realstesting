@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>📖 Bharat PDF Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: white;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 20px;
+    }
+    canvas {
+      margin: 10px 0;
+      border-radius: 6px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.2);
+      max-width: 100%;
+    }
+    input[type="file"] {
+      padding: 10px;
+      border-radius: 6px;
+      background: #1e88e5;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>📖 Bharat PDF Viewer</h2>
+  <input type="file" id="file" accept="application/pdf">
+
+  <div id="pdf-container"></div>
+
+  <script>
+    const fileInput = document.getElementById("file");
+    const container = document.getElementById("pdf-container");
+
+    fileInput.addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const fileReader = new FileReader();
+      fileReader.onload = async function () {
+        const typedArray = new Uint8Array(this.result);
+        const pdf = await pdfjsLib.getDocument({ data: typedArray }).promise;
+
+        container.innerHTML = ""; // Clear previous
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const viewport = page.getViewport({ scale: 1.5 });
+
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d");
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
+
+          await page.render({ canvasContext: context, viewport }).promise;
+          container.appendChild(canvas);
+        }
+      };
+      fileReader.readAsArrayBuffer(file);
+    });
+  </script>
+
+</body>
+</html>
