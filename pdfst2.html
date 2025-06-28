@@ -1,0 +1,120 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>✍️ Add Text to PDF - Bharat Editor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+      text-align: center;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      margin-top: 10px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #1976d2;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>✍️ Add Text to PDF</h2>
+  <input type="file" id="pdfUpload" accept="application/pdf" />
+  <input type="text" id="textToAdd" placeholder="Enter your text" />
+  <br />
+  <canvas id="pdfCanvas"></canvas>
+  <br />
+  <button onclick="downloadUpdatedPDF()">📥 Download PDF</button>  <script>
+    let pdfDoc, page, pdfBytes, scale = 1.5;
+    let canvas = document.getElementById("pdfCanvas");
+    let ctx = canvas.getContext("2d");
+    let clickedX = 0, clickedY = 0;
+
+    document.getElementById("pdfUpload").addEventListener("change", async function() {
+      const file = this.files[0];
+      const reader = new FileReader();
+
+      reader.onload = async function() {
+        pdfBytes = new Uint8Array(reader.result);
+        const loadingTask = pdfjsLib.getDocument({ data: pdfBytes });
+        pdfDoc = await loadingTask.promise;
+        page = await pdfDoc.getPage(1);
+
+        const viewport = page.getViewport({ scale });
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+      };
+      reader.readAsArrayBuffer(file);
+    });
+
+    canvas.addEventListener("click", function(e) {
+      const text = document.getElementById("textToAdd").value;
+      if (!text || !pdfBytes) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const xCanvas = e.clientX - rect.left;
+      const yCanvas = e.clientY - rect.top;
+
+      placeTextOnPDF(text, xCanvas, yCanvas);
+    });
+
+    async function placeTextOnPDF(text, xCanvas, yCanvas) {
+      const pdfDocLib = await PDFLib.PDFDocument.load(pdfBytes);
+      const pages = pdfDocLib.getPages();
+      const firstPage = pages[0];
+
+      const { width, height } = firstPage.getSize();
+
+      const scaleX = width / canvas.width;
+      const scaleY = height / canvas.height;
+
+      const xPDF = xCanvas * scaleX;
+      const yPDF = (canvas.height - yCanvas) * scaleY;
+
+      firstPage.drawText(text, {
+        x: xPDF,
+        y: yPDF,
+        size: 14,
+        color: PDFLib.rgb(0, 0, 0),
+      });
+
+      const newPdfBytes = await pdfDocLib.save();
+      pdfBytes = newPdfBytes;
+
+      // Reload PDF preview
+      const pdf = await pdfjsLib.getDocument({ data: newPdfBytes }).promise;
+      const page = await pdf.getPage(1);
+      const viewport = page.getViewport({ scale });
+
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+    }
+
+    async function downloadUpdatedPDF() {
+      const blob = new Blob([pdfBytes], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "edited.pdf";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  </script></body>
+</html>
