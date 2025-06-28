@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📑 Reorder PDF Pages - Bharat Tools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    .preview-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 15px;
+    }
+
+    .page-thumb {
+      width: 100px;
+      cursor: grab;
+      border: 2px solid transparent;
+      border-radius: 6px;
+      background: white;
+      padding: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .page-thumb.dragging {
+      opacity: 0.5;
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #1976d2;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: 12px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>📑 Reorder PDF Pages</h2>
+  <input type="file" id="upload" accept="application/pdf" />
+  <div class="preview-container" id="preview"></div>
+  <button onclick="downloadReorderedPDF()">Download Reordered PDF</button>
+  <button onclick="window.print()">🖨️ Print</button>
+  <button onclick="sharePage()">📤 Share</button>
+
+  <footer>Powered by BharatVerse</footer>
+
+  <script>
+    let pdfDoc, pageImages = [];
+
+    document.getElementById("upload").addEventListener("change", async function () {
+      const file = this.files[0];
+      const reader = new FileReader();
+
+      reader.onload = async function () {
+        const typedArray = new Uint8Array(reader.result);
+        const loadingTask = pdfjsLib.getDocument({ data: typedArray });
+        const pdf = await loadingTask.promise;
+        pdfDoc = pdf;
+        renderThumbnails(pdf);
+      };
+
+      reader.readAsArrayBuffer(file);
+    });
+
+    async function renderThumbnails(pdf) {
+      const preview = document.getElementById("preview");
+      preview.innerHTML = "";
+      pageImages = [];
+
+      for (let i = 0; i < pdf.numPages; i++) {
+        const page = await pdf.getPage(i + 1);
+        const viewport = page.getViewport({ scale: 0.3 });
+
+        const canvas = document.createElement("canvas");
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        const context = canvas.getContext("2d");
+        await page.render({ canvasContext: context, viewport: viewport }).promise;
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "page-thumb";
+        wrapper.draggable = true;
+        wrapper.dataset.index = i;
+        wrapper.appendChild(canvas);
+        preview.appendChild(wrapper);
+
+        pageImages.push(i);
+
+        // Drag events
+        wrapper.addEventListener("dragstart", e => {
+          e.dataTransfer.setData("text/plain", i);
+          wrapper.classList.add("dragging");
+        });
+        wrapper.addEventListener("dragend", () => wrapper.classList.remove("dragging"));
+        wrapper.addEventListener("dragover", e => e.preventDefault());
+        wrapper.addEventListener("drop", e => {
+          e.preventDefault();
+          const fromIndex = parseInt(e.dataTransfer.getData("text/plain"));
+          const toIndex = parseInt(wrapper.dataset.index);
+          reorderPages(fromIndex, toIndex);
+        });
+      }
+    }
+
+    function reorderPages(from, to) {
+      if (from === to) return;
+      const item = pageImages.splice(from, 1)[0];
+      pageImages.splice(to, 0, item);
+      renderThumbnails(pdfDoc); // Re-render with new order
+    }
+
+    async function downloadReorderedPDF() {
+      const pdfBytes = await pdfDoc.getData();
+      const originalDoc = await PDFLib.PDFDocument.load(pdfBytes);
+      const newDoc = await PDFLib.PDFDocument.create();
+
+      for (const index of pageImages) {
+        const [copied] = await newDoc.copyPages(originalDoc, [index]);
+        newDoc.addPage(copied);
+      }
+
+      const finalBytes = await newDoc.save();
+      const blob = new Blob([finalBytes], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "reordered.pdf";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function sharePage() {
+      const msg = "📑 Try Bharat PDF Reorder Tool!";
+      if (navigator.share) {
+        navigator.share({
+          title: "Bharat PDF Reorder Tool",
+          text: msg,
+          url: window.location.href
+        });
+      } else {
+        alert("Sharing not supported.");
+      }
+    }
+  </script>
+</body>
+</html>
