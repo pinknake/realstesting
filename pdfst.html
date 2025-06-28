@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📄 BharatVerse PDF Text Editor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8f8f8;
+      padding: 20px;
+      text-align: center;
+    }
+    h2 { color: #2e7d32; }
+    canvas {
+      border: 1px solid #ccc;
+      margin-top: 15px;
+      max-width: 100%;
+    }
+    #controls {
+      margin: 20px 0;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #2e7d32;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #1b5e20;
+    }
+  </style>
+</head>
+<body>
+  <h2>📄 Add Text to PDF - BharatVerse</h2>  <input type="file" id="uploadPDF" accept="application/pdf" />
+  <div id="controls" style="display:none">
+    <input type="text" id="textInput" placeholder="Enter text to insert" />
+    <button onclick="addTextToPDF()">Add Text & Download</button>
+  </div>
+  <canvas id="pdfCanvas"></canvas>  <script>
+    let pdfDocGlobal, page, pdfBytesGlobal;
+
+    document.getElementById('uploadPDF').addEventListener('change', async function () {
+      const file = this.files[0];
+      const reader = new FileReader();
+      reader.onload = async function () {
+        pdfBytesGlobal = new Uint8Array(reader.result);
+        const loadingTask = pdfjsLib.getDocument({ data: pdfBytesGlobal });
+        const pdf = await loadingTask.promise;
+        pdfDocGlobal = pdf;
+        page = await pdf.getPage(1);
+        renderPDFPage(page);
+        document.getElementById("controls").style.display = "block";
+      };
+      reader.readAsArrayBuffer(file);
+    });
+
+    async function renderPDFPage(page) {
+      const viewport = page.getViewport({ scale: 1.5 });
+      const canvas = document.getElementById("pdfCanvas");
+      const context = canvas.getContext("2d");
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+      await page.render({ canvasContext: context, viewport: viewport }).promise;
+    }
+
+    async function addTextToPDF() {
+      const text = document.getElementById("textInput").value;
+      if (!text) return alert("Enter text to add to PDF.");
+
+      const pdfDoc = await PDFLib.PDFDocument.load(pdfBytesGlobal);
+      const pages = pdfDoc.getPages();
+      const firstPage = pages[0];
+
+      const { width, height } = firstPage.getSize();
+      firstPage.drawText(text, {
+        x: 50,
+        y: height - 100,
+        size: 18,
+        color: PDFLib.rgb(0.2, 0.2, 0.8),
+      });
+
+      const finalPdfBytes = await pdfDoc.save();
+      const blob = new Blob([finalPdfBytes], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "text-added.pdf";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  </script></body>
+</html>
